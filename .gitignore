@@ -2,3 +2,4 @@ rag.ipynb
 main.py
 /offload_models/orca_mini
 /offload_models/phi3
+__pycache__/

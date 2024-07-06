@@ -12,6 +12,8 @@ multipart
 flash-attn
 langchain-huggingface
 chromadb
+uvicorn
+
 
 #!pip install torch
 #!pip install huggingface-hub

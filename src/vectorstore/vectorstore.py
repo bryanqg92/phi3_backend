@@ -1,17 +1,15 @@
-from langchain.embeddings import HuggingFaceBgeEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from langchain_community.vectorstores import Chroma
 
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 import torch
 
-class vectorstore():
+class vectorstore(Chroma):
 
     def __init__(self, docs):
         self.docs = docs
-
         self.model_name = "BAAI/bge-reranker-base"
         self.encode_kwargs = {'normalize_embeddings': True} # set True to compute cosine similarity
-
         self.model_norm = HuggingFaceBgeEmbeddings(
             model_name=self.model_name,
             model_kwargs={'device': torch.device ("cuda" if torch.cuda.is_available() else "cpu")},

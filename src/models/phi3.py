@@ -1,9 +1,13 @@
-from transformers import AutoTokenizer, pipeline
 import torch
+import transformers
+from transformers import AutoTokenizer, pipeline
 from langchain_huggingface import HuggingFacePipeline
 
 class phi3_model():
 
+
+    llm = None
+    
     def __init__(self) -> None:
         
         self.model_hf = "microsoft/Phi-3-mini-4k-instruct"
@@ -30,9 +34,9 @@ class phi3_model():
         )
     
     def getPipeline(self) -> HuggingFacePipeline:
-        
+
         llm_phi3 = HuggingFacePipeline(
-            pipeline = pipeline,
+            pipeline = self.pipeline,
             )
         return llm_phi3
 

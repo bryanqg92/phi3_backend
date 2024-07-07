@@ -23,8 +23,8 @@ def main(prompt:str):
     response = qa.invoke(query)
     response2 = qa2.invoke(query)
 
-    print("\n   Response: " + response['result'])
-    print("\n   Response: " + response2['result'])
+    print("\n   Response phi: " + response['result'])
+    print("\n   Response: LlaMa " + response2['result'])
 
 if __name__ == "__main__":
     main("Hay conjuntos difusos?")

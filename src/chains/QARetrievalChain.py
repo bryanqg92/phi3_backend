@@ -20,7 +20,8 @@ class QARetrievalChain():
         Pregunta: {question}
 
         Solo devuelve la respuesta útil a continuación y nada más y responde siempre en español
-        Respuesta útil:
+       
+        ###
         """
         self.prompt = PromptTemplate(template=self.custom_prompt_template,
                         input_variables=['context', 'question'])
@@ -28,7 +29,8 @@ class QARetrievalChain():
         self.qa = RetrievalQA.from_chain_type(
             llm=llm,
             chain_type = 'stuff',
-            retriever = vectorstore.as_retriever(search_kwargs={'k':5}),
+            retriever = vectorstore.as_retriever(search_kwargs={'k':3}),
+            return_source_documents=True,
             chain_type_kwargs={"prompt": self.prompt}
         )
 

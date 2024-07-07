@@ -5,9 +5,6 @@ from langchain_huggingface import HuggingFacePipeline
 
 class phi3_model():
 
-
-    llm = None
-    
     def __init__(self) -> None:
         
         self.model_hf = "microsoft/Phi-3-mini-4k-instruct"

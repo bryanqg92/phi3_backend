@@ -8,19 +8,23 @@ def main(prompt:str):
 
     print("\n   ==> Starting Application")
     print(f"\n   ==> {prompt}")
-    model = llama2_7b_model()
-    print("\n   ==> Loaded Model")
+    model1 = phi3_model()
+    model2 = llama2_7b_model()
+    print("\n   ==> Loaded Models")
 
     DocTextSplitter.LoadAndSplit("docs/Informe Final CD.pdf")
     print("\n   ==>Loaded Documents and splitted")
 
-    #qa = QARetrievalChain(model.getPipeline()).GetQAChain()
-    qa = QARetrievalReranker(model.getPipeline()).GetQAChain()
+    qa = QARetrievalChain(model1.getPipeline()).GetQAChain()
+    qa2 = QARetrievalReranker(model2.getPipeline()).GetQAChain()
     print("\n   ==>Loaded QA Chain")
 
     query = {"query": prompt}
-    response = qa(query)
-    print("\n   Response: " + response['result'].split("###")[-1].strip())
+    response = qa.invoke(query)
+    response2 = qa2.invoke(query)
+
+    print("\n   Response: " + response['result'])
+    print("\n   Response: " + response2['result'])
 
 if __name__ == "__main__":
     main("Hay conjuntos difusos?")

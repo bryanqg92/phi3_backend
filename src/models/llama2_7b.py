@@ -9,7 +9,7 @@ class llama2_7b_model():
         
         self.model_hf = "meta-llama/Llama-2-7b-chat-hf"
         self.token = "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"
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_hf, padding_side='left')
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_hf, padding_side='left', token = self.token)
         self.pipeline = pipeline(
             "text-generation",            # Tipo de tarea: generación de texto
             model=self.model_hf,             # Nombre del modelo preentrenado

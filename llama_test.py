@@ -1,27 +1,42 @@
-from src.models.phi3 import phi3_model
+import sys
 from src.models.llama2_7b import llama2_7b_model
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 from src.chains.QARetrievalChain import QARetrievalChain
 from src.chains.QARetrievalReranker import QARetrievalReranker
 
-def main(prompt:str):
+def main(**kwargs):
+    prompt = kwargs.get("prompt", "")
+    rerank = kwargs.get("rerank", False)
 
     print("\n   ==> Starting Application")
     print(f"\n   ==> {prompt}")
-    model2 = llama2_7b_model()
-    print("\n   ==> Loaded Models")
+    model = llama2_7b_model()
+    print("\n   ==> Loaded Model")
 
     DocTextSplitter.LoadAndSplit("docs/Informe Final CD.pdf")
-    print("\n   ==>Loaded Documents and splitted")
+    print("\n   ==> Loaded Documents and splitted")
 
-
-    qa2 = QARetrievalReranker(model2.getPipeline()).GetQAChain()
-    print("\n   ==>Loaded QA Chain")
+    if rerank:
+        qa = QARetrievalReranker(model.getPipeline()).GetQAChain()
+    else:
+        qa = QARetrievalChain(model.getPipeline()).GetQAChain()
+    print("\n   ==> Loaded QA Chain")
 
     query = {"query": prompt}
-    response2 = qa2.invoke(query)
+    response = qa.invoke(query)
 
-    print("\n   Response: LlaMa " + response2['result'])
+    print("\n   Response LlaMa: " + response['result'])
 
 if __name__ == "__main__":
-    main("Hablame sobre el asistente")
+    kwargs = {}
+    args = sys.argv[1:]
+    
+    # Parse positional argument
+    if len(args) > 0:
+        kwargs["prompt"] = args[0]
+    
+    # Parse optional arguments
+    if "--rerank" in args:
+        kwargs["rerank"] = True
+
+    main(**kwargs)

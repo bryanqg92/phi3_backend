@@ -20,7 +20,6 @@ class QARetrievalChain():
         Pregunta: {question}
 
         Solo devuelve la respuesta útil a continuación y nada más y responde siempre en español
-       
         ###
         """
         self.prompt = PromptTemplate(template=self.custom_prompt_template,

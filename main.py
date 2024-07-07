@@ -18,10 +18,8 @@ def main(prompt:str):
     print("\n   ==>Loaded QA Chain")
 
     query = {"query": prompt}
-    response = qa.invoke(query)
+    response = qa(query)
     print("\n   Response: " + response['result'].split("###")[-1].strip())
-
-
 
 if __name__ == "__main__":
     main("Hay conjuntos difusos?")

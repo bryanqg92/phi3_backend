@@ -1,5 +1,4 @@
 import torch
-import transformers
 from transformers import AutoTokenizer, pipeline
 from langchain_huggingface import HuggingFacePipeline
 

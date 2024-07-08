@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, HTTPException, File
+from pathlib import Path
 from contextlib import asynccontextmanager
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 from app.dependencies.LoadModel import LoadModel
@@ -14,13 +15,18 @@ app = FastAPI()
 async def startup_event():
     LoadModel.initialize_model("phi3")
 
+UPLOAD_DIRECTORY = "./docs/"
+
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
-
     if file.content_type not in ["text/plain", "application/pdf"]:
         raise HTTPException(status_code=400, detail="Invalid file type")
+    
     try:
-        file_location = f"docs/{file.filename}"
+        # Crear el directorio si no existe
+        Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
+        
+        file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
         
@@ -28,10 +34,11 @@ async def upload_file(file: UploadFile = File(...)):
         LoadVectorstore.init_vectorstore()
         os.remove(file_location)
         LoadQAChain.init_chain()
+        
         return {"message": "cargado y vectorizado"}
-
+    
     except Exception as e:
-        return {"message": f"error subiendo archivo {str(e)}"}
+        return {"message": f"error subiendo archivo: {str(e)}"}
 
 
 @app.post("/generate")

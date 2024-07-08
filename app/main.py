@@ -7,13 +7,11 @@ import shutil
 import os
 
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
+app = FastAPI()
+
+@app.on_event("startup")
+async def startup_event():
     LoadModel.initialize_model("phi3")
-    LoadQAChain.init_chain()
-
-
-app = FastAPI(lifespan=lifespan)
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
@@ -35,6 +33,7 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.post("/generate")
 async def generate_text(prompt: str):
+    LoadQAChain.init_chain()
     generated_text = LoadQAChain.LLMResponse(prompt)
     return {"generated_text": generated_text}
 '''

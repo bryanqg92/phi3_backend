@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #chatbox {
+            width: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #messages {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        #input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-right: none;
+        }
+        #input button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        #controls select, #controls button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        #upload {
+            margin-bottom: 10px;
+        }
+        #upload input {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <div id="controls">
+            <select id="modelSelect">
+                <option value="phi3">phi3</option>
+                <option value="llama2_7b">llama2_7b</option>
+            </select>
+            <button onclick="changeModel()">Change Model</button>
+        </div>
+        <div id="upload">
+            <input type="file" id="fileInput">
+            <button onclick="uploadFile()">Upload</button>
+        </div>
+        <div id="input">
+            <input type="text" id="userInput" placeholder="Type a message...">
+            <button onclick="sendMessage('generate')">Generate</button>
+            <button onclick="sendMessage('rerank_generate')">Rerank</button>
+        </div>
+    </div>
+
+    <script>
+
+        const urlapi = 'http://localhost:5050/';
+        async function sendMessage(endpoint) {
+            const userInput = document.getElementById('userInput').value;
+            if (!userInput) return;
+
+            const messages = document.getElementById('messages');
+            const userMessage = document.createElement('div');
+            userMessage.textContent = `You: ${userInput}`;
+            messages.appendChild(userMessage);
+
+            document.getElementById('userInput').value = '';
+
+            try {
+                const response = await fetch(`${urlapi}${endpoint}?prompt=${encodeURIComponent(userInput)}`, {
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json'
+                    },
+                    body: JSON.stringify({prompt: userInput})
+                });
+
+                const data = await response.json();
+                alert(data.generated_text);
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: ${data.generated_text}`;
+                messages.appendChild(botMessage);
+            } catch (error) {
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: Error - ${error.message}`;
+                messages.appendChild(botMessage);
+            }
+
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        async function changeModel() {
+            const model = document.getElementById('modelSelect').value;
+            try {
+                const response = await fetch(`${urlapi}change_model?model=${encodeURIComponent(model)}`, {
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json'
+                    },
+                    body: JSON.stringify({ model: model })
+                });
+
+                const data = await response.json();
+                const messages = document.getElementById('messages');
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: ${data.message}`;
+                messages.appendChild(botMessage);
+
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: Error - ${error.message}`;
+                const messages = document.getElementById('messages');
+                messages.appendChild(botMessage);
+
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${urlapi}upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                const messages = document.getElementById('messages');
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: File uploaded successfully - ${data.message}`;
+                messages.appendChild(botMessage);
+
+                messages.scrollTop = messages.scrollHeight;
+            } catch (error) {
+                const botMessage = document.createElement('div');
+                botMessage.textContent = `Bot: Error - ${error.message}`;
+                const messages = document.getElementById('messages');
+                messages.appendChild(botMessage);
+
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -3,4 +3,5 @@ offload_models/
 __pycache__/
 chroma_db/
 documents_to_talentum/
-chatbot.html
+llama_test.py
+phi3_test.py

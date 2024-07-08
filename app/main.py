@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile, HTTPException, File
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from contextlib import asynccontextmanager
+from fastapi.responses import FileResponse, HTMLResponse
 
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 
@@ -29,6 +30,10 @@ app.add_middleware(
 async def startup_event():
     LoadModel.initialize_model("phi3")
     LoadEmbeddingModel.initialize_embeddings()
+
+@app.get("/", response_class=HTMLResponse)
+async def get_home():
+    return FileResponse("chatbot.html")
 
 UPLOAD_DIRECTORY = "./docs/"
 

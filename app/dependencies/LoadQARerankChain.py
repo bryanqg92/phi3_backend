@@ -8,19 +8,11 @@ class LoadQARerankChain:
 
     @classmethod
     def LLMResponse(cls, prompt: str):
+        
         response = cls.qa_rerank_ins.invoke({"query": prompt})
-
-        if LoadModel.get_model_type() == "phi3":
-            print(response)
-            response_list = response['result'].split("###")
-            if len(response_list) > 1:
-                response = response_list[1].strip()
-            else:
-                response = response_list[-1].strip()
-        else:
-            response_list = response['result'].split("###")
-            response = response_list[-1].strip()
-
+        print(response)
+        response_list = response['result'].split("###")
+        response = response_list[1].strip()
         return response
     
     @classmethod

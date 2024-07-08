@@ -14,6 +14,7 @@ flash-attn
 langchain-huggingface
 chromadb
 uvicorn
+flashrank
 
 
 #!pip install torch

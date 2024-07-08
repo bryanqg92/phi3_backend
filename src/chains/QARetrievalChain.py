@@ -1,18 +1,13 @@
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFacePipeline
-from src.vectorstore.vectorstore import vectorstore as vs
-from src.text_splitter.DocTextSplitter import DocTextSplitter
+from src.vectorstore.vectorstore import VectorStore
 from langchain.prompts import PromptTemplate
 
 
 class QARetrievalChain():
-
-
     
-    def __init__(self, llm: HuggingFacePipeline):
-        vectorstore_ins = vs(DocTextSplitter.docs)
-        vectorstore = vectorstore_ins.get_vectorstore()
-
+    def __init__(self, llm: HuggingFacePipeline, vectorstore: VectorStore):
+        
         self.custom_prompt_template = """Usa la siguiente información para responder a la pregunta del usuario.
         Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.
 

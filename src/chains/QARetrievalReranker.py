@@ -1,6 +1,6 @@
 from langchain.chains import RetrievalQA
 from langchain_huggingface import HuggingFacePipeline
-from src.vectorstore.vectorstore import vectorstore as vs
+from src.vectorstore.vectorstore import VectorStore
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 from langchain.prompts import PromptTemplate
 from langchain.retrievers import ContextualCompressionRetriever
@@ -9,9 +9,7 @@ from langchain.retrievers.document_compressors import LLMChainExtractor
 class QARetrievalReranker:
 
 
-    def __init__(self, llm: HuggingFacePipeline):
-        vectorstore_ins = vs(DocTextSplitter.docs)
-        vectorstore = vectorstore_ins.get_vectorstore()
+    def __init__(self, llm: HuggingFacePipeline, vectorstore: VectorStore):
 
         compressor = LLMChainExtractor.from_llm(llm)
         retriever_with_rerank = ContextualCompressionRetriever(

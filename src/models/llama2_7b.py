@@ -23,7 +23,7 @@ class llama2_7b_model():
                 'temperature': 0.3,       # Controla la aleatoriedad de las predicciones (0.5 para un equilibrio entre coherencia y creatividad)
                 'max_length': 1500,       # Longitud máxima del texto generado
                 'do_sample': True,        # Activa la muestreo aleatorio durante la generación de texto
-                'top_k': 5,               # Limita la consideración de las 10 mejores opciones para cada token (mejora la calidad)
+                'top_k': 3,               # Limita la consideración de las 10 mejores opciones para cada token (mejora la calidad)
                 'eos_token_id': self.tokenizer.eos_token_id,  # Token de fin de secuencia para terminar la generación
                 'attn_implementation': 'eager',
                 'cache_dir':"offload_models/phi3"

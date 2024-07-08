@@ -2,8 +2,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 
 
-class DocTextSplitter():
-     
+class DocTextSplitter():    
     text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=200,
             length_function=len,

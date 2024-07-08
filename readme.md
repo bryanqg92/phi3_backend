@@ -36,10 +36,10 @@ Utiliza dos modelos de LLM ensamblados con el framework LangChain, los cuales re
 
 ### 2.¡importante!: primero debes cargar el documento a vectorizar para que el chatbot de responda de acuerdo al documento
 
-#### Button Generate: Genera una respuesta con un contexto aleatorio
+#### - Button Generate: Genera una respuesta con un contexto aleatorio
 
-#### Button rerank: Genera una respuesta con un contexto mejorado
+#### - Button rerank: Genera una respuesta con un contexto mejorado
 
-#### Cambiar modelo: Se utiliza para interactuar con los dos modelos
+#### - Cambiar modelo: Se utiliza para seleccionar y cambiar el modelo que genera respuestas
 
 

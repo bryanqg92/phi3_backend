@@ -3,5 +3,3 @@ offload_models/
 __pycache__/
 chroma_db/
 documents_to_talentum/
-llama_test.py
-phi3_test.py

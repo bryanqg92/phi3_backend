@@ -29,9 +29,9 @@ async def upload_file(file: UploadFile = File(...)):
         os.remove(file_location)
         LoadQAChain.init_chain()
         return {"message": "cargado y vectorizado"}
-    except Exception:
-        return {"message": "Hubo un error al subir el archivo"}
 
+    except Exception as e:
+        return {"message": f"error subiendo archivo {str(e)}"}
 
 
 @app.post("/generate")

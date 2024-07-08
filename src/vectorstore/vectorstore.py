@@ -17,8 +17,7 @@ class VectorStore:
         self.encode_kwargs = {'normalize_embeddings': True}
         self.model_norm = HuggingFaceBgeEmbeddings(
             model_name=self.model_name,
-            model_kwargs={'device': torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-                            'cache_dir':"offload_models/phi3"},
+            model_kwargs={'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")},
             encode_kwargs=self.encode_kwargs
             
         )

@@ -1,17 +1,29 @@
 from fastapi import FastAPI, UploadFile, HTTPException, File
+from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
 from contextlib import asynccontextmanager
+
 from src.text_splitter.DocTextSplitter import DocTextSplitter
+
 from app.dependencies.LoadModel import LoadModel
 from app.dependencies.LoadQAChain import LoadQAChain
 from app.dependencies.LoadQARerankChain import LoadQARerankChain
 from app.dependencies.LoadVectorstore import LoadVectorstore
 from app.dependencies.LoadEmbeddingModel import LoadEmbeddingModel
+
 import shutil
 import os
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"],  
+)
 
 @app.on_event("startup")
 async def startup_event():
@@ -26,7 +38,7 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Invalid file type")
     
     try:
-        # Crear el directorio si no existe
+       
         Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
         
         file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)

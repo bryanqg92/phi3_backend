@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 from app.dependencies.LoadModel import LoadModel
 from app.dependencies.LoadQAChain import LoadQAChain
+from app.dependencies.LoadQARerankChain import LoadQARerankChain
 from app.dependencies.LoadVectorstore import LoadVectorstore
 from app.dependencies.LoadEmbeddingModel import LoadEmbeddingModel
 import shutil
@@ -36,6 +37,7 @@ async def upload_file(file: UploadFile = File(...)):
         LoadVectorstore.init_vectorstore()
         os.remove(file_location)
         LoadQAChain.init_chain()
+        LoadQARerankChain.init_chain()
         
         return {"message": "cargado y vectorizado"}
     
@@ -48,12 +50,11 @@ async def generate_text(prompt: str):
     
     generated_text = LoadQAChain.LLMResponse(prompt)
     return {"generated_text": generated_text}
-'''
+
 @app.post("/rerank_generate")
 async def generate_text(prompt: str):
-    del LoadAppModel.model 
-    generated_text = model.generate(prompt)
-    return {"generated_text": generated_text}''' 
+    generated_text = LoadQARerankChain.LLMResponse(prompt)
+    return {"generated_text": generated_text}
 
 @app.post("/change_model")
 async def generate_text(model: str):

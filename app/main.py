@@ -5,6 +5,7 @@ from src.text_splitter.DocTextSplitter import DocTextSplitter
 from app.dependencies.LoadModel import LoadModel
 from app.dependencies.LoadQAChain import LoadQAChain
 from app.dependencies.LoadVectorstore import LoadVectorstore
+from app.dependencies.LoadEmbeddingModel import LoadEmbeddingModel
 import shutil
 import os
 
@@ -14,6 +15,7 @@ app = FastAPI()
 @app.on_event("startup")
 async def startup_event():
     LoadModel.initialize_model("phi3")
+    LoadEmbeddingModel.initialize_embeddings()
 
 UPLOAD_DIRECTORY = "./docs/"
 

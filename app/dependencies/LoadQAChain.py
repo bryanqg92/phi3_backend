@@ -11,10 +11,18 @@ class LoadQAChain:
         response = cls.qa_chain_ins.invoke({"query": prompt})
 
         if LoadModel.get_model_type() == "phi3":
-            response = response['result']
+            print(response)
+            response_list = response['result'].split("###")
+            if len(response_list) > 1:
+                response = response_list[1].strip()
+            else:
+                response = response_list[-1].strip()
         else:
-            response = response['result']
+            response_list = response['result'].split("###")
+            response = response_list[-1].strip()
+
         return response
+    
     @classmethod
     def init_chain(cls):
         cls.qa_chain_ins = QARetrievalChain(LoadModel.get_qa_model(), LoadVectorstore.GetVectorstore()).GetQAChain()

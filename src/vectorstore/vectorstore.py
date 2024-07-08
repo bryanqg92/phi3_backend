@@ -1,10 +1,13 @@
-from langchain_community.embeddings import HuggingFaceBgeEmbeddings
+from src.models.embeddings.bge import bge_model
 from langchain_community.vectorstores import Chroma
 from src.text_splitter.DocTextSplitter import DocTextSplitter
+import os
 import torch
 
 class VectorStore:
     _instance = None
+    _DB_VECTORIAL_NAME="documents_to_talentum"
+    _CACHE_DIR = "./offload_models/embeddings/bge"
 
     def __new__(cls):
         if cls._instance is None:
@@ -13,20 +16,19 @@ class VectorStore:
         return cls._instance
 
     def initialize(self):
-        self.model_name = "BAAI/bge-reranker-base"
-        self.encode_kwargs = {'normalize_embeddings': True}
-        self.model_norm = HuggingFaceBgeEmbeddings(
-            model_name=self.model_name,
-            model_kwargs={'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")},
-            encode_kwargs=self.encode_kwargs
-            
-        )
 
-        self.vectorstore = Chroma.from_documents(
-            DocTextSplitter.docs, 
-            self.model_norm,
-            persist_directory="./chroma_db" 
-        )
+        if not os.path.exists(self._DB_VECTORIAL_NAME):
+            self.vectorstore = Chroma.from_documents(
+                DocTextSplitter.docs, 
+                bge_model.model_norm,
+                persist_directory=VectorStore._DB_VECTORIAL_NAME
+            )
+            self.vectorstore.persist()
+        else:
+            self.vectorstore = Chroma(
+                persist_directory=VectorStore._DB_VECTORIAL_NAME,
+                embedding_function=bge_model.model_norm,
+            )
 
     def get_vectorstore(self):
         return self.vectorstore

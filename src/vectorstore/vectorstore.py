@@ -18,7 +18,8 @@ class VectorStore:
         self.model_norm = HuggingFaceBgeEmbeddings(
             model_name=self.model_name,
             model_kwargs={'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")},
-            encode_kwargs=self.encode_kwargs
+            encode_kwargs=self.encode_kwargs,
+            cache_dir= "offload_models/phi3"
         )
 
         self.vectorstore = Chroma.from_documents(

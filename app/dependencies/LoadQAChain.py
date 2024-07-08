@@ -7,8 +7,8 @@ class LoadQAChain:
     qa_chain_ins = None
 
     @classmethod
-    def LLMResponse(self, prompt: str):
-        response = self.qa_chain_ins.invoke({"query": prompt})
+    def LLMResponse(cls, prompt: str):
+        response = cls.qa_chain_ins.invoke({"query": prompt})
 
         if LoadModel.current_get_model_type() == "phi3":
             response = response['result'].split("###")[1].strip()
@@ -18,4 +18,4 @@ class LoadQAChain:
     
     @classmethod
     def init_chain(cls):
-        cls.qa_chain_ins = QARetrievalChain(LoadModel.get_qa_model(), LoadVectorstore.GetVectorstore())
+        cls.qa_chain_ins = QARetrievalChain(LoadModel.get_qa_model(), LoadVectorstore.GetVectorstore()).GetQAChain()

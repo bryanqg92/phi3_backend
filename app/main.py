@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 from app.dependencies.LoadModel import LoadModel
 from app.dependencies.LoadQAChain import LoadQAChain
+from app.dependencies.LoadVectorstore import LoadVectorstore
 import shutil
 import os
 
@@ -24,7 +25,9 @@ async def upload_file(file: UploadFile = File(...)):
             shutil.copyfileobj(file.file, file_object)
         
         DocTextSplitter.LoadAndSplit(file_location)
+        LoadVectorstore.init_vectorstore()
         os.remove(file_location)
+        LoadQAChain.init_chain()
         return {"message": "cargado y vectorizado"}
     except Exception:
         return {"message": "Hubo un error al subir el archivo"}
@@ -33,7 +36,7 @@ async def upload_file(file: UploadFile = File(...)):
 
 @app.post("/generate")
 async def generate_text(prompt: str):
-    LoadQAChain.init_chain()
+    
     generated_text = LoadQAChain.LLMResponse(prompt)
     return {"generated_text": generated_text}
 '''

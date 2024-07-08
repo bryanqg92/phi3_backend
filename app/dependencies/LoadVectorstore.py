@@ -5,8 +5,8 @@ class LoadVectorstore:
 
     @classmethod
     def GetVectorstore(cls):
-        return cls.vectorstore
+        return cls.vectorstore_ins
     
     @classmethod
-    def init_vectorstore():
+    def init_vectorstore(cls):
         cls.vectorstore_ins = VectorStore().get_vectorstore()

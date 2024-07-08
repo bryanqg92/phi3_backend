@@ -14,7 +14,7 @@ class LoadQAChain:
             response = response['result']
         else:
             response = response['result']
-        return response['result']
+        return response
     @classmethod
     def init_chain(cls):
         cls.qa_chain_ins = QARetrievalChain(LoadModel.get_qa_model(), LoadVectorstore.GetVectorstore()).GetQAChain()

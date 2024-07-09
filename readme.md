@@ -26,7 +26,7 @@ Utiliza dos modelos de LLM ensamblados con el framework LangChain, los cuales re
    conda install pip
    ```
 
-4. Ejecutar por consola ```make install-deps``` para instalar las dependencias necesarias.
+4. Ejecutar por consola ```make install-deps``` para instalar las dependencias necesarias. Si se tiene problemas con Makefile instalar mediante bash usando ```bash install_requirements.sh```
 5. En el enviroment seleccionado para la app ejecutar 
 ```uvicorn app.main:app --host 0.0.0.0 --port 5050 --reload```
 

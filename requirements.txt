@@ -10,21 +10,9 @@ sentence-transformers
 FlagEmbedding
 fastapi
 multipart
-flash-attn
 langchain-huggingface
 chromadb
 uvicorn
 flashrank
-
-
-#!pip install torch
-#!pip install huggingface-hub
-#!pip install transformers
-#!pip install accelerate
-#!pip install langchain
-#!pip install chromadb
-#!pip install pypdf
-#!pip install sentence-transformers
-#!pip install flash-attn
-#!pip install langchain_community
-#!pip install langchain-huggingface
+flash-attn
+flash-attention

@@ -11,5 +11,6 @@ install-deps:
     pip install fastapi
     pip install multipart
     pip install flash-attn
+    pip install flashrank
     pip install langchain-huggingface
     pip install chromadb

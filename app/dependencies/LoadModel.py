@@ -1,6 +1,6 @@
 import gc
 import torch
-from models.phi3_4k import phi3_model
+from src.models.phi3_4k import phi3_model
 from src.models.llama2_7b import llama2_7b_model
 from src.models.orca_mini import orca_mini
 

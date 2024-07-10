@@ -28,7 +28,7 @@ class QARerankChain():
         self.compressor = FlashrankRerank()
         self.compression_retriever = ContextualCompressionRetriever(
             base_compressor=self.compressor,
-            base_retriever=vectorstore.as_retriever(search_kwargs={'k':3}))
+            base_retriever=vectorstore.as_retriever(search_kwargs={'k':5}))
         
         self.qa = RetrievalQA.from_chain_type(
             llm=llm,

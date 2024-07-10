@@ -28,7 +28,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def startup_event():
-    LoadModel.initialize_model("phi3")
+    LoadModel.initialize_model()
     LoadEmbeddingModel.initialize_embeddings()
 
 @app.get("/", response_class=HTMLResponse)
@@ -43,7 +43,6 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail="Invalid file type")
     
     try:
-       
         Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
         
         file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)

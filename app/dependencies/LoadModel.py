@@ -1,7 +1,8 @@
 import gc
 import torch
-from src.models.phi3 import phi3_model
+from models.phi3_4k import phi3_model
 from src.models.llama2_7b import llama2_7b_model
+from src.models.orca_mini import orca_mini
 
 class LoadModel:
     _model = None
@@ -17,13 +18,15 @@ class LoadModel:
         cls._current_model_type = None
 
     @classmethod
-    def initialize_model(cls, model_type='phi3'):
+    def initialize_model(cls, model_type='orca_mini'):
         if cls._current_model_type != model_type:
             cls._clear_model()
             if model_type == 'phi3':
                 cls._model = phi3_model()
             elif model_type == 'llama2_7b':
                 cls._model = llama2_7b_model()
+            elif model_type == 'orca_mini':
+                cls._model = orca_mini()
             else:
                 raise ValueError("Invalid model type")
             cls._current_model_type = model_type

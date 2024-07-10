@@ -74,7 +74,7 @@ async def generate_text(prompt: str):
 
 @app.post("/change_model")
 async def generate_text(model: str):
-    if model not in ["phi3", "llama2_7b"]:
+    if model not in ["phi3", "llama2_7b", "orca_mini"]:
         raise HTTPException(status_code=400, detail="Invalid model type")
     else:
         LoadModel.change_model(model)

@@ -18,7 +18,7 @@ class LoadModel:
         cls._current_model_type = None
 
     @classmethod
-    def initialize_model(cls, model_type='orca_mini'):
+    def initialize_model(cls, model_type='phi3'):
         if cls._current_model_type != model_type:
             cls._clear_model()
             if model_type == 'phi3':

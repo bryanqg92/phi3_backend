@@ -17,7 +17,7 @@ class QARerankChain():
         Contexto: {context}
         Pregunta: {question}
 
-        Solo devuelve la primera respuesta sin devolver todo el conxtexto, responde siempre en español
+        Solo devuelve respuesta sin devolver todo el conxtexto, responde siempre en español
         a continuación.
         ###
         """

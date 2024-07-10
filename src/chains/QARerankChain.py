@@ -10,15 +10,13 @@ class QARerankChain():
     
     def __init__(self, llm: HuggingFacePipeline, vectorstore: VectorStore):
         
-        self.custom_prompt_template = """
-        Usa la siguiente información para responder a la pregunta del usuario.
+        self.custom_prompt_template = """Usa la siguiente información para responder a la pregunta del usuario.
         Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.
 
         Contexto: {context}
         Pregunta: {question}
 
-        Solo devuelve respuesta sin devolver todo el conxtexto, responde siempre en español
-        a continuación.
+        Responde siempre en español. Solo devuelve la respuesta útil a continuación y nada más. 
         ###
         """
         self.prompt = PromptTemplate(template=self.custom_prompt_template,
@@ -28,7 +26,7 @@ class QARerankChain():
         self.compressor = FlashrankRerank()
         self.compression_retriever = ContextualCompressionRetriever(
             base_compressor=self.compressor,
-            base_retriever=vectorstore.as_retriever(search_kwargs={'k':5}))
+            base_retriever=vectorstore.as_retriever(search_kwargs={'k':3}))
         
         self.qa = RetrievalQA.from_chain_type(
             llm=llm,

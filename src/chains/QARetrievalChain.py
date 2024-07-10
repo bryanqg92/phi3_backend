@@ -8,15 +8,13 @@ class QARetrievalChain():
     
     def __init__(self, llm: HuggingFacePipeline, vectorstore: VectorStore):
         
-        self.custom_prompt_template = """
-        Usa la siguiente información para responder a la pregunta del usuario.
+        self.custom_prompt_template = """Usa la siguiente información para responder a la pregunta del usuario.
         Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.
 
         Contexto: {context}
         Pregunta: {question}
 
-        Solo devuelve la primera respuesta sin devolver todo el conxtexto, responde siempre en español
-        a continuación.
+        Responde siempre en español. Solo devuelve la respuesta útil a continuación y nada más. 
         ###
         """
         self.prompt = PromptTemplate(template=self.custom_prompt_template,

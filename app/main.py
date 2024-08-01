@@ -1,9 +1,7 @@
 from fastapi import FastAPI, UploadFile, HTTPException, File
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
-from contextlib import asynccontextmanager
 from fastapi.responses import FileResponse, HTMLResponse
-
 from src.text_splitter.DocTextSplitter import DocTextSplitter
 
 from app.dependencies.LoadModel import LoadModel
@@ -15,9 +13,7 @@ from app.dependencies.LoadEmbeddingModel import LoadEmbeddingModel
 import shutil
 import os
 
-
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
@@ -48,13 +44,13 @@ async def upload_file(file: UploadFile = File(...)):
         file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
-        
+
         DocTextSplitter.LoadAndSplit(file_location)
         LoadVectorstore.init_vectorstore()
-        os.remove(file_location)
         LoadQAChain.init_chain()
         LoadQARerankChain.init_chain()
-        
+        os.remove(file_location)
+
         return {"message": "cargado y vectorizado"}
     
     except Exception as e:

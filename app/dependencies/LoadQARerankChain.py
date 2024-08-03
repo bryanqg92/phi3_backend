@@ -12,7 +12,7 @@ class LoadQARerankChain:
         response = cls.qa_rerank_ins.invoke({"query": prompt})
         print(response)
         response_list = response['result'].split("###")
-        response = response_list[1].strip()
+        #response = response_list[1].strip()
         return response
     
     @classmethod

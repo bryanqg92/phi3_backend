@@ -8,7 +8,7 @@ from src.vectorstore.vectorstore import VectorStore
 
 class QARerankChain():
     
-    def __init__(self, llm: HuggingFacePipeline, vectorstore: VectorStore):
+    def __init__(self, llm, vectorstore: VectorStore):
         
         self.custom_prompt_template = """Usa la siguiente información para responder a la pregunta del usuario.
         Si no sabes la respuesta, simplemente di que no lo sabes, no intentes inventar una respuesta.

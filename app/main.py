@@ -40,11 +40,9 @@ async def upload_file(file: UploadFile = File(...)):
     
     try:
         Path(UPLOAD_DIRECTORY).mkdir(parents=True, exist_ok=True)
-        
         file_location = os.path.join(UPLOAD_DIRECTORY, file.filename)
         with open(file_location, "wb+") as file_object:
             shutil.copyfileobj(file.file, file_object)
-
         DocTextSplitter.LoadAndSplit(file_location)
         LoadVectorstore.init_vectorstore()
         LoadQAChain.init_chain()

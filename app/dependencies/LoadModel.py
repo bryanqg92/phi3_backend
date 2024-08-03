@@ -39,6 +39,7 @@ class LoadModel:
     def get_qa_model(cls):
         if cls._model is None:
             cls.initialize_model()  # Inicializa con el modelo por defecto si aún no está inicializado
+            
         return cls._model.getPipeline()
 
     @classmethod
